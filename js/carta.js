@@ -193,7 +193,7 @@ abrirCarta.addEventListener("click", () => {
 
         mostrarFinal();
 
-    }, 10500);
+    }, 40500);
 
 });
 
