@@ -34,38 +34,27 @@ let slideActual = 0;
 
 const totalSlides = indicadores.length;
 
-
 // =========================================
 // MOSTRAR FOTO
 // =========================================
-
 function mostrarSlide(numero) {
 
     // Carrusel circular
-
     if (numero >= totalSlides) {
-
         slideActual = 0;
-
-    } else if (numero < 0) {
-
+    } 
+    else if (numero < 0) {
         slideActual = totalSlides - 1;
-
-    } else {
-
+    } 
+    else {
         slideActual = numero;
-
     }
 
-
-    // Mover las fotos
-
+    // Mover carrusel
     track.style.transform =
         `translateX(-${slideActual * 100}%)`;
 
-
     // Actualizar indicadores
-
     indicadores.forEach((indicador, index) => {
 
         indicador.classList.toggle(
@@ -74,8 +63,22 @@ function mostrarSlide(numero) {
         );
 
     });
-
 }
+
+
+// =========================================
+// CLICK EN INDICADORES
+// =========================================
+
+indicadores.forEach((indicador, index) => {
+
+    indicador.addEventListener("click", () => {
+
+        mostrarSlide(index);
+
+    });
+
+});
 
 
 // =========================================
@@ -94,37 +97,34 @@ indicadores.forEach((indicador, index) => {
 
 
 // =========================================
-// DESLIZAMIENTO EN CELULAR Y PC
+// DESLIZAMIENTO EN CELULAR
 // =========================================
 
+const galeria = document.querySelector(".galeria");
+
 let inicioX = 0;
-let moviendo = false;
+let finalX = 0;
 
 
-// Cuando empieza el gesto
-track.addEventListener("pointerdown", (evento) => {
+// Cuando empieza el toque
+galeria.addEventListener("touchstart", (evento) => {
 
-    inicioX = evento.clientX;
-    moviendo = true;
+    inicioX = evento.touches[0].clientX;
 
-    track.setPointerCapture(evento.pointerId);
-
-});
+}, { passive: true });
 
 
-// Cuando termina el gesto
-track.addEventListener("pointerup", (evento) => {
+// Cuando termina el toque
+galeria.addEventListener("touchend", (evento) => {
 
-    if (!moviendo) return;
-
-    const finalX = evento.clientX;
-
-    moviendo = false;
+    finalX = evento.changedTouches[0].clientX;
 
     const diferencia = inicioX - finalX;
 
 
     // Deslizar hacia la izquierda
+    // 1 → 2 → 3 → 1
+
     if (diferencia > 50) {
 
         mostrarSlide(slideActual + 1);
@@ -133,21 +133,16 @@ track.addEventListener("pointerup", (evento) => {
 
 
     // Deslizar hacia la derecha
+    // 1 → 3 → 2 → 1
+
     else if (diferencia < -50) {
 
         mostrarSlide(slideActual - 1);
 
     }
 
-});
+}, { passive: true });
 
-
-// Si se cancela el gesto
-track.addEventListener("pointercancel", () => {
-
-    moviendo = false;
-
-});
 
 // =========================================
 // ABRIR CARTA
