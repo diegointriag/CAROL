@@ -32,19 +32,40 @@ const musica =
 
 let slideActual = 0;
 
-const totalSlides = 3;
+const totalSlides = indicadores.length;
 
 
-// Mostrar una foto
+// =========================================
+// MOSTRAR FOTO
+// =========================================
+
 function mostrarSlide(numero) {
 
-    slideActual = numero;
+    // Carrusel circular
+
+    if (numero >= totalSlides) {
+
+        slideActual = 0;
+
+    } else if (numero < 0) {
+
+        slideActual = totalSlides - 1;
+
+    } else {
+
+        slideActual = numero;
+
+    }
+
+
+    // Mover las fotos
 
     track.style.transform =
         `translateX(-${slideActual * 100}%)`;
 
 
     // Actualizar indicadores
+
     indicadores.forEach((indicador, index) => {
 
         indicador.classList.toggle(
@@ -58,7 +79,7 @@ function mostrarSlide(numero) {
 
 
 // =========================================
-// CLICK EN INDICADORES
+// INDICADORES
 // =========================================
 
 indicadores.forEach((indicador, index) => {
@@ -73,7 +94,7 @@ indicadores.forEach((indicador, index) => {
 
 
 // =========================================
-// DESLIZAMIENTO EN CELULAR
+// DESLIZAMIENTO CELULAR
 // =========================================
 
 let inicioX = 0;
@@ -98,35 +119,29 @@ track.addEventListener("touchend", (evento) => {
 
 function manejarDeslizamiento() {
 
-    const diferencia =
-        inicioX - finalX;
+    const diferencia = inicioX - finalX;
 
 
-    // Deslizar hacia la izquierda
+    // IZQUIERDA
+    // 1 → 2 → 3 → 1
+
     if (diferencia > 50) {
 
-        if (slideActual < totalSlides - 1) {
-
-            mostrarSlide(slideActual + 1);
-
-        }
+        mostrarSlide(slideActual + 1);
 
     }
 
 
-    // Deslizar hacia la derecha
-    if (diferencia < -50) {
+    // DERECHA
+    // 1 → 3 → 2 → 1
 
-        if (slideActual > 0) {
+    else if (diferencia < -50) {
 
-            mostrarSlide(slideActual - 1);
-
-        }
+        mostrarSlide(slideActual - 1);
 
     }
 
 }
-
 
 // =========================================
 // ABRIR CARTA
