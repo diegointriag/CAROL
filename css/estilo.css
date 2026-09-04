@@ -432,38 +432,30 @@ body {
 
 .galeria {
     width: 100%;
-    overflow-x: auto; /* Permite scroll horizontal */
-    scroll-snap-type: x mandatory; /* Fuerza a centrar la imagen al deslizar */
-    -webkit-overflow-scrolling: touch; /* Deslizamiento suave en iOS */
+    overflow: hidden;
     border-radius: 22px;
     box-shadow: 0 15px 40px rgba(87, 44, 36, 0.18);
     background: rgba(255,255,255,0.3);
-    touch-action: pan-x pan-y; /* Permite gestos horizontales y verticales */
+    touch-action: none; /* Evita que el navegador interfiera con el arrastre */
 }
 
 .galeria-track {
     display: flex;
-    width: max-content; /* Permite que las fotos se coloquen una al lado de otra */
-    /* Remueve la transición si usas scroll nativo */
+    width: 100%;
+    transition: transform 0.4s cubic-bezier(.4,0,.2,1);
 }
 
 .foto-slide {
     min-width: 100%;
-    width: 100%;
     aspect-ratio: 4 / 5;
     overflow: hidden;
     background: #ead0c0;
-    scroll-snap-align: start; /* Ancla cada foto al deslizar */
-    scroll-snap-stop: always;
 }
-
 
 .foto-slide img {
     width: 100%;
     height: 100%;
-
     display: block;
-
     object-fit: cover;
 }
 
