@@ -94,37 +94,37 @@ indicadores.forEach((indicador, index) => {
 
 
 // =========================================
-// DESLIZAMIENTO CELULAR
+// DESLIZAMIENTO EN CELULAR Y PC
 // =========================================
 
 let inicioX = 0;
-let finalX = 0;
+let moviendo = false;
 
 
-track.addEventListener("touchstart", (evento) => {
+// Cuando empieza el gesto
+track.addEventListener("pointerdown", (evento) => {
 
-    inicioX = evento.touches[0].clientX;
+    inicioX = evento.clientX;
+    moviendo = true;
 
-});
-
-
-track.addEventListener("touchend", (evento) => {
-
-    finalX = evento.changedTouches[0].clientX;
-
-    manejarDeslizamiento();
+    track.setPointerCapture(evento.pointerId);
 
 });
 
 
-function manejarDeslizamiento() {
+// Cuando termina el gesto
+track.addEventListener("pointerup", (evento) => {
+
+    if (!moviendo) return;
+
+    const finalX = evento.clientX;
+
+    moviendo = false;
 
     const diferencia = inicioX - finalX;
 
 
-    // IZQUIERDA
-    // 1 → 2 → 3 → 1
-
+    // Deslizar hacia la izquierda
     if (diferencia > 50) {
 
         mostrarSlide(slideActual + 1);
@@ -132,16 +132,22 @@ function manejarDeslizamiento() {
     }
 
 
-    // DERECHA
-    // 1 → 3 → 2 → 1
-
+    // Deslizar hacia la derecha
     else if (diferencia < -50) {
 
         mostrarSlide(slideActual - 1);
 
     }
 
-}
+});
+
+
+// Si se cancela el gesto
+track.addEventListener("pointercancel", () => {
+
+    moviendo = false;
+
+});
 
 // =========================================
 // ABRIR CARTA
