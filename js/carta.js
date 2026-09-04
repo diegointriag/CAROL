@@ -389,3 +389,64 @@ function mostrarFinal() {
     }, 1000);
 
 }
+
+// --- LÓGICA DE DESLIZAMIENTO TÁCTIL PARA LA GALERÍA ---
+const track = document.querySelector('.galeria-track');
+const slides = document.querySelectorAll('.foto-slide');
+const indicadores = document.querySelectorAll('.indicador');
+
+let currentIndex = 0;
+let startX = 0;
+let currentTranslate = 0;
+let prevTranslate = 0;
+let isDragging = false;
+
+if (track && slides.length > 0) {
+  // Eventos táctiles para móviles
+  track.addEventListener('touchstart', touchStart);
+  track.addEventListener('touchmove', touchMove);
+  track.addEventListener('touchend', touchEnd);
+
+  function touchStart(event) {
+    startX = event.touches[0].clientX;
+    isDragging = true;
+  }
+
+  function touchMove(event) {
+    if (!isDragging) return;
+    const currentX = event.touches[0].clientX;
+    const diffX = currentX - startX;
+    
+    // Mueve la foto junto con el dedo mientras arrastra
+    currentTranslate = prevTranslate + diffX;
+    track.style.transform = `translateX(${currentTranslate}px)`;
+  }
+
+  function touchEnd() {
+    isDragging = false;
+    const movedBy = currentTranslate - prevTranslate;
+
+    // Si arrastró más de 50px a la izquierda, pasa a la siguiente foto
+    if (movedBy < -50 && currentIndex < slides.length - 1) {
+      currentIndex += 1;
+    }
+    // Si arrastró más de 50px a la derecha, regresa a la foto anterior
+    if (movedBy > 50 && currentIndex > 0) {
+      currentIndex -= 1;
+    }
+
+    setPositionByIndex();
+  }
+
+  function setPositionByIndex() {
+    // Calcula la posición exacta según la foto actual
+    currentTranslate = currentIndex * -track.offsetWidth;
+    prevTranslate = currentTranslate;
+    track.style.transform = `translateX(${currentTranslate}px)`;
+
+    // Actualiza los puntos indicadores si existen
+    indicadores.forEach((dot, idx) => {
+      dot.classList.toggle('activo', idx === currentIndex);
+    });
+  }
+}
