@@ -431,7 +431,6 @@ body {
 
 .galeria {
     width: 100%;
-
     overflow: hidden;
 
     border-radius: 22px;
@@ -454,7 +453,8 @@ body {
     transition:
         transform 0.5s
         cubic-bezier(.4,0,.2,1);
-   touch-action: pan-y;
+
+    cursor: grab;
 }
 
 
