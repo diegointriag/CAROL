@@ -432,18 +432,13 @@ body {
 
 .galeria {
     width: 100%;
-
     overflow: hidden;
-
     border-radius: 22px;
-
-    box-shadow:
-        0 15px 40px
-        rgba(87, 44, 36, 0.18);
-
+    box-shadow: 0 15px 40px rgba(87, 44, 36, 0.18);
     background: rgba(255,255,255,0.3);
-
-    touch-action: pan-y;
+    
+    /* CAMBIA ESTO: permite que el dedo mueva el contenedor horizontalmente */
+    touch-action: pan-x pan-y; 
 }
 
 
